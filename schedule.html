@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plan Scheduled Sessions (variant 1) — Schedule</title>
+</head><body>
+<style>
+.vj-cal *,.vj-pop *{box-sizing:border-box}
+body{margin:0;background:#fff;color:#1e1e1e}
+.vj-cal{margin:0 auto;padding:1rem;max-width:62rem;font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#1e1e1e}
+.vj-bar{display:flex;align-items:center;justify-content:center;gap:1rem;margin:0 0 .5rem}
+.vj-title{font-size:1.3rem;font-weight:500;margin:0;min-width:11rem;text-align:center}
+.vj-nav{font:inherit;font-size:1.4rem;line-height:1;width:2.2rem;height:2.2rem;border:1px solid #d8d8d8;border-radius:50%;background:#fff;color:#555;cursor:pointer}
+.vj-nav:hover{background:#f0f0f0}
+.vj-nav[disabled]{opacity:.25;cursor:default}
+.vj-grid{display:grid;grid-template-columns:repeat(7,1fr)}
+.vj-hd{font-size:.8rem;color:#787878;padding:.2rem;text-align:center}
+.vj-day{min-height:5rem;padding:0;display:flex;flex-direction:column}
+.vj-day.vj-pad{border:0!important;min-height:0}
+.vj-hdr{display:flex;align-items:flex-start;justify-content:space-between;padding:1px 3px;font-size:.75rem;line-height:1.15}
+.vj-n{color:#1e1e1e}
+.vj-mk{font-weight:600;padding-left:.15rem}
+.vj-bf{position:relative;flex:1;margin:0 1px 1px}
+.vj-b{position:absolute;border:0;padding:0;margin:0;font:inherit;cursor:pointer;border-radius:1px}
+.vj-b.vj-off{opacity:.45}
+.vj-legend{display:flex;flex-wrap:wrap;gap:.4rem 1rem;margin-top:.9rem;font-size:.8rem;color:#555;align-items:center}
+.vj-key{display:inline-flex;align-items:center;gap:.35rem}
+.vj-key i{width:.85rem;height:.85rem;display:inline-block;border-radius:2px}
+.vj-foot{margin-top:.5rem;font-size:.78rem;color:#787878}
+.vj-pop[hidden]{display:none}
+.vj-pop{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;padding:1rem;z-index:9999}
+.vj-card{background:#fff;color:#1e1e1e;border-radius:10px;padding:1.1rem 1.25rem;max-width:22rem;width:100%;font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;box-shadow:0 10px 40px rgba(0,0,0,.25)}
+.vj-card h3{margin:0 0 .5rem;font-size:1.1rem}
+.vj-card dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:.2rem .75rem;font-size:.9rem}
+.vj-card dt{color:#787878}
+.vj-card dd{margin:0}
+.vj-close{margin-top:.9rem;font:inherit;padding:.4rem .9rem;border-radius:6px;border:1px solid #d8d8d8;background:#f6f6f6;color:inherit;cursor:pointer}
+@media (max-width:560px){
+.vj-cal{padding:.4rem}
+.vj-day{min-height:3.6rem}
+.vj-hdr{font-size:.65rem}
+.vj-hd{font-size:.7rem}
+}
+</style>
+<div class="vj-cal">
+<div class="vj-bar">
+<button class="vj-nav" type="button" data-vj-step="-1" aria-label="Previous month">‹</button>
+<h2 class="vj-title" id="vj-title"></h2>
+<button class="vj-nav" type="button" data-vj-step="1" aria-label="Next month">›</button>
+</div>
+<section class="vj-month" data-vj-label="August 2026">
+<div class="vj-grid">
+<div class="vj-hd">S</div>
+<div class="vj-hd">M</div>
+<div class="vj-hd">T</div>
+<div class="vj-hd">W</div>
+<div class="vj-hd">T</div>
+<div class="vj-hd">F</div>
+<div class="vj-hd">S</div>
+<div class="vj-day vj-pad"></div>
+<div class="vj-day vj-pad"></div>
+<div class="vj-day vj-pad"></div>
+<div class="vj-day vj-pad"></div>
+<div class="vj-day vj-pad"></div>
+<div class="vj-day vj-pad"></div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">1</span></div>
+<div class="vj-bf">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">2</span></div>
+<div class="vj-bf">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">3</span></div>
+<div class="vj-bf">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">4</span></div>
+<div class="vj-bf" style="background:rgba(196,196,196,0.85)" title="Not Scheduled">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">5</span></div>
+<div class="vj-bf">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">6</span></div>
+<div class="vj-bf" style="background:rgba(196,196,196,0.85)" title="Not Scheduled">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">7</span></div>
+<div class="vj-bf">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">8</span></div>
+<div class="vj-bf">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">9</span></div>
+<div class="vj-bf">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">10</span></div>
+<div class="vj-bf">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">11</span></div>
+<div class="vj-bf" style="background:rgba(196,196,196,0.85)" title="Not Scheduled">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">12</span></div>
+<div class="vj-bf">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">13</span></div>
+<div class="vj-bf" style="background:rgba(196,196,196,0.85)" title="Not Scheduled">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">14</span></div>
+<div class="vj-bf">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">15</span></div>
+<div class="vj-bf">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">16</span></div>
+<div class="vj-bf">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">17</span></div>
+<div class="vj-bf">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">18</span></div>
+<div class="vj-bf" style="background:rgba(196,196,196,0.85)" title="Not Scheduled">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">19</span></div>
+<div class="vj-bf">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">20</span></div>
+<div class="vj-bf" style="background:rgba(196,196,196,0.85)" title="Not Scheduled">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">21</span></div>
+<div class="vj-bf">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">22</span></div>
+<div class="vj-bf">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(205,45,45)">
+<div class="vj-hdr"><span class="vj-n">23</span></div>
+<div class="vj-bf">
+</div>
+</div>
+<div class="vj-day" style="border:2px solid rgb(220,170,30)">
+<div class="vj-hdr"><span class="vj-n">24</span></div>
+<div class="vj-bf">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(55,150,70)">
+<div class="vj-hdr"><span class="vj-n">25</span></div>
+<div class="vj-bf" style="background:rgba(196,196,196,0.85)" title="Not Scheduled">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(55,150,70)">
+<div class="vj-hdr"><span class="vj-n">26</span></div>
+<div class="vj-bf">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(55,150,70)">
+<div class="vj-hdr"><span class="vj-n">27</span></div>
+<div class="vj-bf" style="background:rgba(196,196,196,0.85)" title="Not Scheduled">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(55,150,70)">
+<div class="vj-hdr"><span class="vj-n">28</span></div>
+<div class="vj-bf">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(55,150,70)">
+<div class="vj-hdr"><span class="vj-n">29</span></div>
+<div class="vj-bf">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(55,150,70)">
+<div class="vj-hdr"><span class="vj-n">30</span></div>
+<div class="vj-bf">
+</div>
+</div>
+<div class="vj-day" style="border:1px solid rgb(55,150,70)">
+<div class="vj-hdr"><span class="vj-n">31</span></div>
+<div class="vj-bf">
+</div>
+</div>
+</div>
+</section>
+<div class="vj-legend">
+<span class="vj-key"><i style="box-shadow:inset 0 0 0 2px rgb(205,45,45)"></i>Past</span>
+<span class="vj-key"><i style="box-shadow:inset 0 0 0 2px rgb(220,170,30)"></i>Today</span>
+<span class="vj-key"><i style="box-shadow:inset 0 0 0 2px rgb(55,150,70)"></i>Upcoming</span>
+<span class="vj-key"><i style="background:rgba(196,196,196,0.85)"></i>Not Scheduled</span>
+</div>
+<p class="vj-foot">Updated 24 August 2026, 11:31 PM  ·  Tap or click a class for details.</p>
+</div>
+<div class="vj-pop" id="vj-pop" hidden>
+<div class="vj-card" role="dialog" aria-modal="true" aria-labelledby="vj-pop-name">
+<h3 id="vj-pop-name"></h3>
+<dl>
+<dt>Date</dt><dd id="vj-pop-when"></dd>
+<dt>Time</dt><dd id="vj-pop-time"></dd>
+<dt>Instructor</dt><dd id="vj-pop-who"></dd>
+</dl>
+<p id="vj-pop-status"></p>
+<button type="button" class="vj-close" id="vj-pop-close">Close</button>
+</div></div>
+<script>
+(function(){
+var ms=[].slice.call(document.querySelectorAll('.vj-month'));
+if(!ms.length)return;
+var i=0;
+for(var k=0;k<ms.length;k++){if(!ms[k].hidden){i=k;break}}
+var t=document.getElementById('vj-title');
+var navs=[].slice.call(document.querySelectorAll('.vj-nav'));
+function show(n){
+i=Math.max(0,Math.min(ms.length-1,n));
+ms.forEach(function(m,k){m.hidden=(k!==i)});
+t.textContent=ms[i].getAttribute('data-vj-label')||'';
+navs.forEach(function(b){
+var s=parseInt(b.getAttribute('data-vj-step'),10);
+b.disabled=(i+s<0||i+s>ms.length-1);
+});
+}
+navs.forEach(function(b){b.addEventListener('click',function(){
+show(i+parseInt(b.getAttribute('data-vj-step'),10));
+})});
+show(i);
+var pop=document.getElementById('vj-pop');
+function set(id,v){var e=document.getElementById(id);if(e)e.textContent=v||'\u2014'}
+document.addEventListener('click',function(e){
+var s=e.target.closest?e.target.closest('.vj-b'):null;
+if(s){
+set('vj-pop-name',s.getAttribute('data-vj-name'));
+set('vj-pop-when',s.getAttribute('data-vj-when'));
+set('vj-pop-time',s.getAttribute('data-vj-time'));
+set('vj-pop-who',s.getAttribute('data-vj-who'));
+var st=s.getAttribute('data-vj-status')||'',
+r=s.getAttribute('data-vj-reason')||'';
+var p=document.getElementById('vj-pop-status');
+p.textContent=st?(r?st+' \u2014 '+r:st):'';
+p.style.display=st?'':'none';
+pop.hidden=false;
+return;
+}
+if(e.target===pop||e.target.id==='vj-pop-close')pop.hidden=true;
+});
+document.addEventListener('keydown',function(e){
+if(e.key==='Escape')pop.hidden=true;
+if(e.key==='ArrowLeft')show(i-1);
+if(e.key==='ArrowRight')show(i+1);
+});
+})();
+</script>
+</body></html>
